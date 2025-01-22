@@ -29,6 +29,7 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 material = "1.12.0"
 runtime = "1.7.6"
+uiToolingPreviewAndroid = "1.7.6"
 
 [libraries]
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -63,6 +64,7 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }

@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.hilt.core)
     implementation(libs.retrofit.core)
+    implementation(libs.ui.tooling.preview.android)
     kapt(libs.hilt.compiler)
     implementation(libs.retrofit.gson.converter)
     //endregion

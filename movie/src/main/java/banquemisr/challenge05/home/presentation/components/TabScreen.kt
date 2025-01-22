@@ -1,65 +1,72 @@
 package banquemisr.challenge05.home.presentation.components
 
-import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import banquemisr.challenge05.core.components.ErrorComponent
 import banquemisr.challenge05.core.components.LoadingComponent
 import banquemisr.challenge05.domain.models.ListMovies
 import banquemisr.challenge05.home.presentation.state.MovieUIState
 
-@SuppressLint("UnrememberedMutableState")
 @Composable
-fun TabScreen(state: MovieUIState, pagingItems: LazyPagingItems<ListMovies>) {
-    val tabs = listOf("Tab 1", "Tab 2", "Tab 3")
-    var selectedTabIndex by mutableStateOf(0)
+fun TabGridExample() {
+    // Tab titles
+    val tabs = listOf("Fruits", "Vegetables", "Dairy")
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        // TabRow for tabs
-        TabRow(
-            selectedTabIndex = selectedTabIndex,
-            contentColor = Color.Black, // Tab text color
-            indicator = { tabPositions ->
-                // Custom Tab Indicator
-                Box(
-                    modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-        ) {
-            // Tab content
+    // Track selected tab index
+    var selectedTabIndex by remember { mutableStateOf(0) }
+
+    // Data sets for each tab
+    val data = listOf(
+        listOf("Apple", "Banana", "Cherry", "Grapes", "Mango"),
+        listOf("Carrot", "Potato", "Broccoli", "Spinach", "Tomato"),
+        listOf("Milk", "Cheese", "Butter", "Yogurt", "Cream")
+    )
+
+    Column {
+        // Tab Row
+        TabRow(selectedTabIndex = selectedTabIndex) {
             tabs.forEachIndexed { index, title ->
                 Tab(
                     selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
-                    text = { Text(text = title) }
+                    text = { Text(title) }
                 )
             }
         }
 
-        // Content based on selected tab
-        when (selectedTabIndex) {
-            0 -> TabContent( state,pagingItems)
-            1 -> TabContent(state,pagingItems)
-            2 -> TabContent(state,pagingItems)
+        // Grid that displays data based on selected tab
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2), // 2 columns
+            modifier = Modifier.fillMaxSize()
+        ) {
+            items(data[selectedTabIndex]) { item ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        text = item,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
         }
     }
 }
+
+
 
 @Composable
 fun TabContent(state: MovieUIState, pagingItems: LazyPagingItems<ListMovies>) {
@@ -83,3 +90,8 @@ fun TabContent(state: MovieUIState, pagingItems: LazyPagingItems<ListMovies>) {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun PreviewTabGridExample() {
+    TabGridExample()
+}

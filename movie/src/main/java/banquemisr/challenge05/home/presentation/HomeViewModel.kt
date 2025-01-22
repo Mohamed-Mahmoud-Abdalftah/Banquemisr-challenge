@@ -35,11 +35,15 @@ class HomeViewModel @Inject constructor(
     override suspend fun handleEvent(event: MovieUIEvent) {
         when (event) {
             MovieUIEvent.LoadInitialHome -> {
-                getPlayingMovies()
+                getPlayingMovies()  // Load default tab data
             }
 
             is MovieUIEvent.OnTabClicked -> {
-                onBannerClicked()
+                when (event.tabName) {
+                    MovieTab.NOW_PLAYING -> getPlayingMovies()
+                    MovieTab.POPULAR -> getPopularMovies()
+                    MovieTab.UPCOMING -> getUpcomingMovies()
+                }
             }
 
             is MovieUIEvent.OnMovieClicked -> {
@@ -52,95 +56,78 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-//
-//    private fun getPlayingMovies() {
-//        viewModelScope.launch {
-//            getPlayingMoviesUseCase.invoke()
-//                .cachedIn(viewModelScope) // Cache PagingData in the ViewModel scope to retain during configuration changes
-//                .collectLatest { pagingData ->
-//                    _moviesData.value = pagingData
-//                }
-//        }
-//    }
 
     private fun getPlayingMovies() {
         viewModelScope.launch {
             getPlayingMoviesUseCase.invoke()
+                .cachedIn(viewModelScope) // Cache PagingData in the ViewModel scope to retain during configuration changes
                 .onStart {
                     updateUiState { copy(isLoading = true) } // Show loading before data is fetched
-                }
-                .catch { error ->
+                }.catch { error ->
                     Log.e("TAG", "getPlayingMovies: error $error")
-                    updateUiState { copy(isLoading = false, error = error) } // Show error if any occurs
-                }
-                .collectLatest { pagingData ->
-                    _moviesData.value = pagingData
                     updateUiState {
                         copy(
-                            moviesData = pagingData,
-                            isLoading = false,
-                            error = null
+                            isLoading = false, error = error
+                        )
+                    } // Show error if any occurs
+                }.collectLatest { pagingData ->
+                    _moviesData.emit(pagingData) // Use emit to ensure state flow updates correctly
+                    updateUiState {
+                        copy(
+                            moviesData = pagingData, isLoading = false, error = null
                         )
                     }
                 }
         }
     }
 
-//    private fun getPopularMovies() {
-//        viewModelScope.launch {
-//            getPopularMoviesUseCase.invoke()
-//                .onStart {
-//                    updateUiState { copy(isLoading = true) }
-//                }
-//                .catch { error ->
-//                    updateUiState { copy(error = error) }
-//                }
-//                .collect { homeSections ->
-//                    updateUiState {
-//                        copy(
-//                            moviesData = homeSections,
-//                            isLoading = false,
-//                            error = null
-//                        )
-//                    }
-//                }
-//        }
-//    }
-//
-//    private fun getUpcomingMovies() {
-//        viewModelScope.launch {
-//            getUpcomingMoviesUseCase.invoke()
-//                .onStart {
-//                    updateUiState { copy(isLoading = true) }
-//                }
-//                .catch { error ->
-//                    updateUiState { copy(error = error) }
-//                }
-//                .collect { homeSections ->
-//                    updateUiState {
-//                        copy(
-//                            moviesData = homeSections,
-//                            isLoading = false,
-//                            error = null
-//                        )
-//                    }
-//                }
-//        }
-//    }
-
-    private fun onBannerClicked() {
-        navigator.navigateTo("list")
+    private fun getPopularMovies() {
+        viewModelScope.launch {
+            getPopularMoviesUseCase.invoke()
+                .cachedIn(viewModelScope) // Cache PagingData in the ViewModel scope to retain during configuration changes
+                .onStart {
+                    updateUiState { copy(isLoading = true) } // Show loading before data is fetched
+                }.catch { error ->
+                    Log.e("TAG", "getPlayingMovies: error $error")
+                    updateUiState {
+                        copy(
+                            isLoading = false, error = error
+                        )
+                    } // Show error if any occurs
+                }.collectLatest { pagingData ->
+                    _moviesData.emit(pagingData) // Use emit to ensure state flow updates correctly
+                    updateUiState {
+                        copy(
+                            moviesData = pagingData, isLoading = false, error = null
+                        )
+                    }
+                }
+        }
     }
 
+    private fun getUpcomingMovies() {
+        viewModelScope.launch {
+            getUpcomingMoviesUseCase.invoke()
+                .cachedIn(viewModelScope) // Cache PagingData in the ViewModel scope to retain during configuration changes
+                .onStart {
+                    updateUiState { copy(isLoading = true) } // Show loading before data is fetched
+                }.catch { error ->
+                    updateUiState {
+                        copy(
+                            isLoading = false, error = error
+                        )
+                    } // Show error if any occurs
+                }.collectLatest { pagingData ->
+                    _moviesData.emit(pagingData) // Use emit to ensure state flow updates correctly
+                    updateUiState {
+                        copy(
+                            moviesData = pagingData, isLoading = false, error = null
+                        )
+                    }
+                }
+        }
+    }
 
-    /* Route with arguments
-      private fun onProductClicked(isSheetOpen: Boolean) {
-          navigator.navigateTo( "detail/$isSheetOpen") {
-              launchSingleTop = true
-              restoreState = true
-          }
-      }
-       */
 
     // Route with Detail Graph
     private fun onMovieClicked() {

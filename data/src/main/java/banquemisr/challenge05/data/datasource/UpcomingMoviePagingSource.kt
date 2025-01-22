@@ -6,14 +6,14 @@ import banquemisr.challenge05.data.mapper.mapToListData
 import banquemisr.challenge05.domain.models.ListMovies
 import javax.inject.Inject
 
-class MoviePagingSource @Inject constructor(
+class UpcomingMoviePagingSource @Inject constructor(
     private val movieDataSource: MovieDataSource,
     private val language: String
 ) : PagingSource<Int, ListMovies>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ListMovies> {
         val page = params.key ?: 1
         return try {
-            val response = movieDataSource.getNowPlaying(language, page)
+            val response = movieDataSource.getUpcoming(language, page)
             val movieList = response.mapToListData().movieList.orEmpty()
 
             LoadResult.Page(
