@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun AppNavigation(
     navigator: Navigator,
     homeScreen: @Composable () -> Unit,
-    detailScreen: @Composable (Boolean) -> Unit,
+    detailScreen: @Composable (Int) -> Unit,
     detailScreenWithGraph: DetailScreens
 ) {
     val navController = rememberNavController()
@@ -26,7 +26,7 @@ fun AppNavigation(
                 is Navigator.Action.Navigate -> navController.navigate(
                     route = action.destination,
                     builder = action.navOptions
-                    )
+                )
              }
         }
     }
@@ -38,8 +38,8 @@ fun AppNavigation(
         }
 
         composable(Destination.detail.route, Destination.detail.arguments) {
-            val isOpenSheet = Detail.objectParser(it)
-            detailScreen(isOpenSheet)
+            val id = Detail.objectParser(it)
+            detailScreen(id)
         }
     }
 

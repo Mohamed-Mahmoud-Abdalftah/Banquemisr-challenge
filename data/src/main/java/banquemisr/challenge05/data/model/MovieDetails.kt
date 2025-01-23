@@ -1,7 +1,8 @@
 package banquemisr.challenge05.data.model
 
-import banquemisr.challenge05.home.domian.models.MovieDetail
+import banquemisr.challenge05.domain.models.MovieDetail
 import com.google.gson.annotations.SerializedName
+
 data class MovieDetails(
     @SerializedName("adult") val adult: Boolean,
     @SerializedName("backdrop_path") val backdropPath: String,
@@ -63,6 +64,7 @@ fun MovieDetails.toDomainDetailModel(): MovieDetail {
         revenue = this.revenue,
         overview = this.overview,
         title = this.title,
-        homepage = this.homepage
+        homepage = this.homepage,
+        posterPath = this.posterPath
     )
 }

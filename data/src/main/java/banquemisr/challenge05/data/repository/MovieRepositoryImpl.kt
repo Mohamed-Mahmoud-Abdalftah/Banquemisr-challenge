@@ -9,9 +9,10 @@ import banquemisr.challenge05.data.datasource.MovieDataSource
 import banquemisr.challenge05.data.datasource.NowPlayingMoviePagingSource
 import banquemisr.challenge05.data.datasource.PopularMoviePagingSource
 import banquemisr.challenge05.data.datasource.UpcomingMoviePagingSource
+import banquemisr.challenge05.data.model.toDomainDetailModel
 import banquemisr.challenge05.domain.models.ListMovies
 import banquemisr.challenge05.domain.repositories.MovieRepository
-import banquemisr.challenge05.home.domian.models.MovieDetail
+import banquemisr.challenge05.domain.models.MovieDetail
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -24,25 +25,41 @@ class MovieRepositoryImpl @Inject constructor(
 
     override fun getNowPlayingMovies(language: String): Flow<PagingData<ListMovies>> {
         return Pager(
-            config = PagingConfig(pageSize = Constants.MAX_PAGE_SIZE, enablePlaceholders = false),
+            config = PagingConfig(
+                pageSize = Constants.MAX_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
             pagingSourceFactory = { NowPlayingMoviePagingSource(dataSource, language) }
         ).flow
+            .flowOn(dispatcher) // Ensure dispatcher is used
     }
 
     override fun getPopularMovies(language: String): Flow<PagingData<ListMovies>> =
         Pager(
-            config = PagingConfig(pageSize = Constants.MAX_PAGE_SIZE, enablePlaceholders = false),
+            config = PagingConfig(
+                pageSize = Constants.MAX_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
             pagingSourceFactory = { PopularMoviePagingSource(dataSource, language) }
-        ).flow.flowOn(dispatcher)
+        ).flow
+            .flowOn(dispatcher) // Ensure dispatcher is used consistently
 
     override fun getUpcomingMovies(language: String): Flow<PagingData<ListMovies>> =
         Pager(
-            config = PagingConfig(pageSize = Constants.MAX_PAGE_SIZE, enablePlaceholders = false),
+            config = PagingConfig(
+                pageSize = Constants.MAX_PAGE_SIZE,
+                enablePlaceholders = false
+            ),
             pagingSourceFactory = { UpcomingMoviePagingSource(dataSource, language) }
-        ).flow.flowOn(dispatcher)
+        ).flow
+            .flowOn(dispatcher) // Ensure dispatcher is used consistently
 
     override suspend fun getMovieDetails(movieId: Int): MovieDetail {
-        // Implement method to retrieve movie details
-        return dataSource.getMovieDetails(movieId)
+        return try {
+            dataSource.getMovieDetails(movieId).toDomainDetailModel()
+        } catch (exception: Exception) {
+            throw Exception("Failed to load movie details", exception)
+        }
     }
+
 }

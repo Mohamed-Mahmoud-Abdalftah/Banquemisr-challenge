@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(
             }
 
             is MovieUIEvent.OnMovieClicked -> {
-                onMovieClicked()
+                onMovieClicked(event.id)
             }
 
             is MovieUIEvent.Dismiss -> {
@@ -57,9 +57,9 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private fun getPlayingMovies() {
+        private fun getPlayingMovies() {
         viewModelScope.launch {
-            getPlayingMoviesUseCase.invoke()
+            getPlayingMoviesUseCase.execute()
                 .cachedIn(viewModelScope) // Cache PagingData in the ViewModel scope to retain during configuration changes
                 .onStart {
                     updateUiState { copy(isLoading = true) } // Show loading before data is fetched
@@ -81,9 +81,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+
+
+
     private fun getPopularMovies() {
         viewModelScope.launch {
-            getPopularMoviesUseCase.invoke()
+            getPopularMoviesUseCase.execute()
                 .cachedIn(viewModelScope) // Cache PagingData in the ViewModel scope to retain during configuration changes
                 .onStart {
                     updateUiState { copy(isLoading = true) } // Show loading before data is fetched
@@ -107,7 +110,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getUpcomingMovies() {
         viewModelScope.launch {
-            getUpcomingMoviesUseCase.invoke()
+            getUpcomingMoviesUseCase.execute()
                 .cachedIn(viewModelScope) // Cache PagingData in the ViewModel scope to retain during configuration changes
                 .onStart {
                     updateUiState { copy(isLoading = true) } // Show loading before data is fetched
@@ -129,9 +132,13 @@ class HomeViewModel @Inject constructor(
     }
 
 
+
+
+
+
     // Route with Detail Graph
-    private fun onMovieClicked() {
-        navigator.navigateTo("detailgraph") {
+    private fun onMovieClicked(id: Int) {
+        navigator.navigateTo("detail/$id") {
             launchSingleTop = true
             restoreState = true
         }

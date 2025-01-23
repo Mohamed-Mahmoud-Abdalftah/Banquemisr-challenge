@@ -3,6 +3,7 @@ package banquemisr.challenge05.movie
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import banquemisr.challenge05.detail.presentation.detailScreen.DetailScreen
 import banquemisr.challenge05.home.presentation.HomeScreen
 import banquemisr.challenge05.movie.ui.theme.BanquemisrChallenge05Theme
 import banquemisr.challenge05.navigation.AppNavigation
@@ -26,12 +27,12 @@ class SingleActivity : ComponentActivity() {
                     homeScreen = {
                         HomeScreen()
                     },
-                    detailScreen = {// We can get args with "it" if we need
-                       // DetailScreen()
+                    detailScreen = {
+                      DetailScreen(it)
                     },
                     detailScreenWithGraph = DetailScreens(
                         detailMain = {
-                           // DetailScreen()
+                            DetailScreen(it)
                         }
                     )
                 )

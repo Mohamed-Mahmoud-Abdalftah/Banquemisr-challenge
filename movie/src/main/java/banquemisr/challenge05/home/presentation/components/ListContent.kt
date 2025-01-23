@@ -14,14 +14,14 @@ import banquemisr.challenge05.domain.models.ListMovies
 
 
 @Composable
-fun ListContent(moviePagingItems: LazyPagingItems<ListMovies>) {
+fun ListContent(moviePagingItems: LazyPagingItems<ListMovies>, onItemClick: (Int) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(all = 8.dp),
         modifier = Modifier.padding(8.dp),
     ) {
         items(moviePagingItems.itemCount) { index ->
-            moviePagingItems[index]?.let { ProductCard(it) }
+            moviePagingItems[index]?.let { ProductCard(it, onItemClick) }
         }
 
         moviePagingItems.apply {

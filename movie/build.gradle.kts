@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.runtime)
     implementation (libs.paging.runtime.ktx)
     implementation (libs.paging.compose)
+    implementation (libs.androidx.constraintlayout.compose)
 
     //endregion
 }

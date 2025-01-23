@@ -8,8 +8,9 @@ import javax.inject.Inject
 
 class NowPlayingMoviePagingSource @Inject constructor(
     private val movieDataSource: MovieDataSource,
-    private val language: String
+    private val language: String,
 ) : PagingSource<Int, ListMovies>() {
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ListMovies> {
         val page = params.key ?: 1
         return try {
@@ -21,7 +22,9 @@ class NowPlayingMoviePagingSource @Inject constructor(
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (movieList.isEmpty()) null else page + 1
             )
+
         } catch (exception: Exception) {
+
             LoadResult.Error(exception)
         }
     }

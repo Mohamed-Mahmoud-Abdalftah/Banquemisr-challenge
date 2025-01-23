@@ -18,10 +18,9 @@ import java.time.Duration
 import javax.inject.Singleton
 
 
-//convert to class
 @Module
 @InstallIn(SingletonComponent::class)
-internal object NetworkModule {
+class NetworkModule {
 
     @Singleton
     @Provides
@@ -30,7 +29,6 @@ internal object NetworkModule {
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()
-
 
     @Provides
     @Singleton
@@ -65,11 +63,9 @@ internal object NetworkModule {
         return interceptor
     }
 
-
     @Singleton
     @Provides
     fun provideHomeApi(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
-
 }

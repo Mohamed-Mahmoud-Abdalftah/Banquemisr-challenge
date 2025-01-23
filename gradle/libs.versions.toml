@@ -1,6 +1,7 @@
 [versions]
 # @keep
 compileSdk = "34"
+constraintlayoutCompose = "1.1.0"
 minSdk = "24"
 androidCore = "1.15.0"
 appcompat = "1.7.0"
@@ -28,10 +29,15 @@ coroutinesCore = "1.7.3"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 material = "1.12.0"
+roomPaging = "2.6.1"
 runtime = "1.7.6"
 uiToolingPreviewAndroid = "1.7.6"
+roomKtx = "2.6.1"
+constraintlayout = "2.2.0"
 
 [libraries]
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomPaging" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 android-core = { module = "androidx.core:core-ktx", version.ref = "androidCore" }
 hilt-core = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
@@ -52,6 +58,9 @@ compose-ui-material = { module = "androidx.compose.material3:material3", version
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 runtime = { module = "androidx.compose.runtime:runtime", version.ref = "runtime" }
 ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-room = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomKtx" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomKtx" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
@@ -65,6 +74,7 @@ ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitV
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }

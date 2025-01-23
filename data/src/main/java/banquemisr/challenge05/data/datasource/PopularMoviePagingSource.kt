@@ -10,6 +10,7 @@ class PopularMoviePagingSource @Inject constructor(
     private val movieDataSource: MovieDataSource,
     private val language: String
 ) : PagingSource<Int, ListMovies>() {
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ListMovies> {
         val page = params.key ?: 1
         return try {
@@ -30,4 +31,5 @@ class PopularMoviePagingSource @Inject constructor(
         return state.anchorPosition
     }
 }
+
 

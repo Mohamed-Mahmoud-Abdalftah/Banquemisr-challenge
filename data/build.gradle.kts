@@ -50,6 +50,14 @@ dependencies {
 
     implementation (libs.paging.runtime.ktx)
 
+
+    //room
+    implementation(libs.androidx.room)
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.paging)
+
     //endregion
 
 }

@@ -1,4 +1,4 @@
-package banquemisr.challenge05.home.domian.models
+package banquemisr.challenge05.domain.models
 
 data class MovieDetail(
     val adult: Boolean,
@@ -8,5 +8,6 @@ data class MovieDetail(
     val runtime: Int,
     val overview: String,
     val title: String,
-    val homepage: String
+    val homepage: String,
+    val posterPath: String
 )

@@ -58,8 +58,11 @@ fun HomeScreen() {
                 ErrorComponent(error = state.error)
             }
 
+
             else -> {
-                ListContent(pagingItems)
+                ListContent(pagingItems, onItemClick = { itemId ->
+                    viewModel.onEvent(MovieUIEvent.OnMovieClicked(itemId))
+                })
             }
         }
     }
