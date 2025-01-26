@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
     val moviesData: StateFlow<PagingData<ListMovies>> = _moviesData
 
 
-    override suspend fun handleEvent(event: MovieUIEvent) {
+    public override suspend fun handleEvent(event: MovieUIEvent) {
         when (event) {
             MovieUIEvent.LoadInitialHome -> {
                 getPlayingMovies()  // Load default tab data

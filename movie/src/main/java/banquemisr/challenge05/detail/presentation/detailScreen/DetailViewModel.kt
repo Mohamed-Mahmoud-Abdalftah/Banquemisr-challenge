@@ -17,7 +17,7 @@ class DetailViewModel @Inject constructor(
 ) : StateAndEventViewModel<DetailUIState, DetailUIEvent>(DetailUIState()) {
 
 
-    override suspend fun handleEvent(event: DetailUIEvent) {
+    public override suspend fun handleEvent(event: DetailUIEvent) {
         when (event) {
 
             is DetailUIEvent.Dismiss -> {
